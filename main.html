@@ -68,3 +68,73 @@
         position:absolute; inset:-40%;
         background:
           radial-gradient(circle at 40% 40%, rgba(255,255,255,.22), transparent 55%),
+          radial-gradient(circle at 60% 65%, rgba(255,255,255,.10), transparent 60%);
+        transform: rotate(18deg);
+      }
+      .brand h1{
+        margin:0;
+        font-size: 18px;
+        letter-spacing: .2px;
+        line-height: 1.2;
+      }
+      .brand .sub{
+        margin-top: 2px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .topbar{
+        display:flex;
+        gap:10px;
+        align-items:center;
+        justify-content:flex-end;
+        flex-wrap: wrap;
+      }
+      .pill{
+        display:inline-flex;
+        gap:8px;
+        align-items:center;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.06);
+        border: 1px solid rgba(255,255,255,.10);
+        color: var(--muted);
+        font-size: 12px;
+        max-width: 480px;
+      }
+      .pill code{
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text);
+        background: rgba(255,255,255,.08);
+        padding: 2px 6px;
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,.10);
+      }
+      .btn{
+        border: 1px solid rgba(255,255,255,.14);
+        background: rgba(255,255,255,.06);
+        color: var(--text);
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: transform .05s ease, background .16s ease, border-color .16s ease;
+      }
+      .btn:hover{ background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.20); }
+      .btn:active{ transform: translateY(1px); }
+      .btn.primary{
+        background: linear-gradient(135deg, rgba(29,233,182,.86), rgba(29,233,182,.34));
+        border-color: rgba(29,233,182,.32);
+        color: #041011;
+        font-weight: 650;
+      }
+      .btn.ghost{ background: transparent; border-color: rgba(255,255,255,.16); }
+      .btn.bad{ background: rgba(255,92,168,.15); border-color: rgba(255,92,168,.25); }
+
+      .grid{
+        display:grid;
+        grid-template-columns: 420px 1fr;
+        gap: 16px;
+        align-items: start;
+      }
