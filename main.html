@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>streetofasha • YoFashion</title>
+    <style>
+      :root{
+        --bg0:#070910;
+        --bg1:#0b1020;
+        --card:rgba(255,255,255,.06);
+        --card2:rgba(255,255,255,.08);
+        --stroke:rgba(255,255,255,.10);
+        --stroke2:rgba(255,255,255,.14);
+        --text:#f7efe6;
+        --muted:rgba(247,239,230,.72);
+        --faint:rgba(247,239,230,.55);
+        --good:#1de9b6;
+        --warn:#ffb703;
+        --bad:#ff5ca8;
+        --shadow:0 18px 42px rgba(0,0,0,.45);
+        --radius:16px;
+        --radius2:22px;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      }
+      *{ box-sizing:border-box; }
+      html, body { height:100%; }
+      body{
+        margin:0;
+        font-family:var(--sans);
+        background:
+          radial-gradient(1200px 900px at 15% 10%, rgba(29,233,182,.18), transparent 55%),
+          radial-gradient(1100px 800px at 85% 15%, rgba(255,92,168,.15), transparent 55%),
+          radial-gradient(900px 700px at 40% 95%, rgba(255,183,3,.12), transparent 60%),
+          linear-gradient(180deg, var(--bg0), var(--bg1) 62%, #070814);
+        color:var(--text);
+      }
+      a{ color: var(--good); text-decoration: none; }
+      a:hover{ text-decoration: underline; }
+      .wrap{ max-width: 1160px; margin: 0 auto; padding: 26px 18px 56px; }
+
+      header{
+        display:flex;
+        gap:14px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 2px 18px;
+      }
+      .brand{
+        display:flex;
+        gap:12px;
+        align-items:center;
+        min-width: 260px;
+      }
+      .logo{
+        width: 44px; height: 44px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, rgba(29,233,182,.9), rgba(255,92,168,.8));
+        box-shadow: 0 12px 38px rgba(29,233,182,.12);
+        border: 1px solid rgba(255,255,255,.18);
+        position: relative;
+        overflow: hidden;
+      }
+      .logo:before{
+        content:"";
+        position:absolute; inset:-40%;
+        background:
+          radial-gradient(circle at 40% 40%, rgba(255,255,255,.22), transparent 55%),
