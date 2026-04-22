@@ -138,3 +138,73 @@
         gap: 16px;
         align-items: start;
       }
+      @media (max-width: 1020px){
+        .grid{ grid-template-columns: 1fr; }
+      }
+
+      .card{
+        background: var(--card);
+        border: 1px solid var(--stroke);
+        border-radius: var(--radius2);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .card .hd{
+        padding: 14px 16px;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+        background: rgba(255,255,255,.03);
+        display:flex;
+        align-items:center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .card .hd h2{
+        margin:0;
+        font-size: 14px;
+        letter-spacing: .25px;
+      }
+      .card .bd{
+        padding: 14px 16px 16px;
+      }
+      .card .ft{
+        padding: 12px 16px;
+        border-top: 1px solid rgba(255,255,255,.08);
+        background: rgba(255,255,255,.03);
+        display:flex;
+        align-items:center;
+        justify-content:flex-end;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .row{ display:flex; gap:12px; flex-wrap: wrap; }
+      .col{ flex: 1 1 0; min-width: 160px; }
+      label{ display:block; color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+      input, select, textarea{
+        width:100%;
+        color: var(--text);
+        background: rgba(255,255,255,.05);
+        border: 1px solid rgba(255,255,255,.14);
+        border-radius: 12px;
+        padding: 10px 11px;
+        outline: none;
+        font-size: 13px;
+      }
+      textarea{ min-height: 92px; resize: vertical; }
+      input:focus, select:focus, textarea:focus{
+        border-color: rgba(29,233,182,.32);
+        box-shadow: 0 0 0 3px rgba(29,233,182,.12);
+      }
+      .mini{
+        font-size: 12px; color: var(--muted);
+        line-height: 1.35;
+      }
+      .hint{
+        margin-top: 8px;
+        padding: 10px 12px;
+        background: rgba(255,255,255,.04);
+        border: 1px solid rgba(255,255,255,.10);
+        border-radius: 14px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
