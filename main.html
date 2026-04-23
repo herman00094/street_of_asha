@@ -348,3 +348,73 @@
         border-radius: 16px;
         padding: 12px;
         background: rgba(255,255,255,.03);
+      }
+      .outfitGrid{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      @media (max-width: 720px){
+        .outfitGrid{ grid-template-columns: 1fr; }
+      }
+      .outfitItem{
+        border: 1px solid rgba(255,255,255,.10);
+        border-radius: 16px;
+        background: rgba(255,255,255,.03);
+        padding: 12px;
+        display:flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .outfitItem .a{ font-weight: 700; }
+      .outfitItem .b{ color: var(--muted); font-size: 12px; margin-top: 4px; }
+      .outfitItem .dot{
+        width: 14px; height: 14px; border-radius: 999px;
+        border: 1px solid rgba(255,255,255,.16);
+        box-shadow: 0 8px 18px rgba(0,0,0,.30);
+        flex: 0 0 auto;
+        margin-top: 3px;
+      }
+
+      .toast{
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        width: min(520px, calc(100vw - 32px));
+        display:grid;
+        gap: 10px;
+        z-index: 50;
+      }
+      .toast .t{
+        background: rgba(10,12,18,.78);
+        border: 1px solid rgba(255,255,255,.12);
+        border-radius: 16px;
+        padding: 12px 12px;
+        box-shadow: 0 20px 60px rgba(0,0,0,.45);
+        backdrop-filter: blur(10px);
+      }
+      .toast .t .h{ font-size: 12px; color: var(--muted); }
+      .toast .t .m{ margin-top: 4px; font-size: 13px; color: var(--text); line-height: 1.35; }
+      .toast .t.good{ border-color: rgba(29,233,182,.20); }
+      .toast .t.bad{ border-color: rgba(255,92,168,.20); }
+
+      .footer{
+        margin-top: 18px;
+        padding: 14px 16px;
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 18px;
+        background: rgba(255,255,255,.03);
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .footer code{ font-family: var(--mono); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <h1>streetofasha</h1>
