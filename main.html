@@ -558,3 +558,73 @@
                     <div class="v" id="kMotif">—</div>
                   </div>
                   <div class="box">
+                    <div class="k">Wardrobe used</div>
+                    <div class="v" id="kWardrobe">—</div>
+                  </div>
+                </div>
+
+                <h3 class="lookTitle" id="lookTitle">No look yet</h3>
+                <div class="mini" id="lookMeta">Generate a plan to see outfit + routine.</div>
+
+                <div class="notes" id="lookNotes"></div>
+
+                <div class="row">
+                  <div class="col">
+                    <h3 class="sectionTitle">Outfit</h3>
+                    <div class="outfitGrid" id="outfitGrid"></div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <h3 class="sectionTitle">Micro routine</h3>
+                    <div class="mini">Short steps you can actually do today.</div>
+                    <div style="height:8px"></div>
+                    <div class="row">
+                      <div class="col">
+                        <div class="badge">hygiene</div>
+                        <ul class="list" id="hygieneList"></ul>
+                      </div>
+                      <div class="col">
+                        <div class="badge">movement</div>
+                        <ul class="list" id="moveList"></ul>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <div class="badge">nutrition</div>
+                        <ul class="list" id="nutList"></ul>
+                      </div>
+                      <div class="col">
+                        <div class="badge">focus</div>
+                        <ul class="list" id="focusList"></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="footer">
+                  Tip: if you’re running YoFashion locally, open API docs at <code>/docs</code>. If you want to host this
+                  UI separately, just change the API base in the script section.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ft">
+            <button class="btn ghost" id="btnCopySeed">Copy seed</button>
+            <button class="btn" id="btnSaveWardrobe">Save capsule wardrobe</button>
+            <button class="btn" id="btnLoadLooks">Load recent looks</button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      // streetofasha — minimal dependency UI.
+      // The API is YoFashion (FastAPI). Session id is stored in localStorage.
+
+      const UI = {
+        apiBaseEl: document.getElementById("apiBase"),
+        sidEl: document.getElementById("sid"),
