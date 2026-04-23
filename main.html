@@ -698,3 +698,73 @@
         localStorage.setItem("streetofasha.tz", UI.tz.value || "");
       }
 
+      function loadLocal(){
+        const sid = localStorage.getItem("streetofasha.sessionId");
+        const pid = localStorage.getItem("streetofasha.selectedPaletteId");
+        STATE.sessionId = sid && sid.length > 0 ? sid : null;
+        STATE.selectedPaletteId = pid && pid.length > 0 ? pid : null;
+        UI.userLabel.value = localStorage.getItem("streetofasha.userLabel") || "Asha";
+        UI.tz.value = localStorage.getItem("streetofasha.tz") || (Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC");
+        UI.sidEl.textContent = STATE.sessionId ? redact(STATE.sessionId, 4) : "none";
+      }
+
+      function redact(s, keep=4){
+        if (!s) return "";
+        if (s.length <= keep*2) return "*".repeat(s.length);
+        return s.slice(0, keep) + "*".repeat(s.length - keep*2) + s.slice(-keep);
+      }
+
+      async function api(path, options={}){
+        const url = STATE.apiBase.replace(/\/$/, "") + path;
+        const headers = Object.assign({ "content-type": "application/json" }, options.headers || {});
+        if (STATE.sessionId) headers["x-yofashion-session"] = STATE.sessionId;
+        const res = await fetch(url, Object.assign({}, options, { headers }));
+        let data = null;
+        const ct = (res.headers.get("content-type") || "");
+        if (ct.includes("application/json")){
+          data = await res.json().catch(() => null);
+        } else {
+          data = await res.text().catch(() => "");
+        }
+        if (!res.ok){
+          const msg = (data && data.detail) ? data.detail : (typeof data === "string" ? data : JSON.stringify(data));
+          throw new Error(`${res.status} ${res.statusText}: ${msg}`);
+        }
+        return data;
+      }
+
+      function setOnline(ok){
+        UI.statusBadge.textContent = ok ? "online" : "offline";
+        UI.statusBadge.style.borderColor = ok ? "rgba(29,233,182,.28)" : "rgba(255,92,168,.24)";
+        UI.statusBadge.style.background = ok ? "rgba(29,233,182,.10)" : "rgba(255,92,168,.09)";
+        UI.statusBadge.style.color = ok ? "rgba(247,239,230,.88)" : "rgba(247,239,230,.86)";
+      }
+
+      function setBusy(isBusy, label){
+        UI.lookBadge.textContent = isBusy ? (label || "working") : "ready";
+        UI.lookBadge.style.borderColor = isBusy ? "rgba(255,183,3,.22)" : "rgba(255,255,255,.14)";
+        UI.lookBadge.style.background = isBusy ? "rgba(255,183,3,.10)" : "rgba(255,255,255,.06)";
+      }
+
+      function paletteCard(p){
+        const el = document.createElement("div");
+        el.className = "palette" + (p.palette_id === STATE.selectedPaletteId ? " sel" : "");
+        const sw = p.colors.map(c => `<div class="swatch" style="background:${c}"></div>`).join("");
+        const active = p.active ? "active" : "inactive";
+        el.innerHTML = `
+          <div class="top">
+            <div class="name">${escapeHtml(p.name)}</div>
+            <div class="badge">${escapeHtml(active)} • mood ${escapeHtml(String(p.mood))}</div>
+          </div>
+          <div class="swatches">${sw}</div>
+          <div class="meta">
+            <div style="display:flex;gap:8px;align-items:center">
+              <span class="badge">id ${escapeHtml(p.palette_id)}</span>
+            </div>
+            <div class="badge" style="border-color:rgba(255,255,255,.10);color:rgba(247,239,230,.70)">text ${escapeHtml(p.suggested_text)}</div>
+          </div>
+        `;
+        el.addEventListener("click", () => {
+          if (UI.paletteMode.value !== "choose"){
+            toast("bad", "Palette", "Switch Palette mode to 'choose' to lock a palette.");
+            return;
