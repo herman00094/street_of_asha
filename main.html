@@ -908,3 +908,73 @@
         }
       }
 
+      function selectedPaletteIdForRequest(){
+        if (UI.paletteMode.value !== "choose") return null;
+        return STATE.selectedPaletteId || null;
+      }
+
+      async function generatePlan(){
+        if (!STATE.sessionId){
+          toast("bad", "Plan", "Start a session first.");
+          return;
+        }
+        const body = {
+          occasion: UI.occasion.value.trim() || "street day",
+          weather: UI.weather.value,
+          minutes_available: Number(UI.minutes.value || 20),
+          energy: Number(UI.energy.value || 6),
+          venue_vibe: UI.venue.value,
+          accent: (UI.accent.value.trim() || null),
+          palette_id: selectedPaletteIdForRequest(),
+        };
+        setBusy(true, "generating");
+        try{
+          const res = await api("/api/recommend", { method: "POST", body: JSON.stringify(body) });
+          setBusy(false, "ready");
+          renderLook(res);
+          toast("good", "Plan", "Look generated.");
+        } catch(e){
+          setBusy(false, "ready");
+          toast("bad", "Plan", String(e.message || e));
+        }
+      }
+
+      async function loadLooks(){
+        if (!STATE.sessionId){
+          toast("bad", "Looks", "Start a session first.");
+          return;
+        }
+        setBusy(true, "loading");
+        try{
+          const looks = await api("/api/looks?limit=18", { method: "GET" });
+          setBusy(false, "ready");
+          if (!looks.length){
+            toast("good", "Looks", "No looks saved yet.");
+            return;
+          }
+          const first = looks[0];
+          toast("good", "Looks", `Loaded ${looks.length} looks. Most recent: ${first.title}`);
+          // You can fetch details too, but list already includes payload.
+        } catch(e){
+          setBusy(false, "ready");
+          toast("bad", "Looks", String(e.message || e));
+        }
+      }
+
+      async function saveCapsuleWardrobe(){
+        if (!STATE.sessionId){
+          toast("bad", "Wardrobe", "Start a session first.");
+          return;
+        }
+        // A compact, editable capsule; user can later build UI for full wardrobe management.
+        const capsule = [
+          { kind:"top", label:"ribbed tee", color:"#111111", warmth:0, formality:-1, tags:["street","minimal"] },
+          { kind:"top", label:"silky cami", color:"#f5f0ea", warmth:-1, formality:0, tags:["night-bloom","soft-tailored"] },
+          { kind:"bottom", label:"straight-leg denim", color:"#1c2b3a", warmth:0, formality:-1, tags:["street","vintage"] },
+          { kind:"bottom", label:"tailored trousers", color:"#273040", warmth:0, formality:2, tags:["soft-tailored","minimal"] },
+          { kind:"outer", label:"light bomber", color:"#2b2f36", warmth:1, formality:0, tags:["street","techwear"] },
+          { kind:"outer", label:"longline coat", color:"#0f1115", warmth:2, formality:2, tags:["night-bloom","soft-tailored"] },
+          { kind:"shoes", label:"clean sneakers", color:"#f0f2f5", warmth:0, formality:-1, tags:["street","sport-luxe"] },
+          { kind:"shoes", label:"ankle boots", color:"#081a13", warmth:1, formality:1, tags:["rain","vintage"] },
+          { kind:"accessory", label:"thin silver chain", color:"#b5c7d3", warmth:0, formality:0, tags:["minimal"] },
+        ];
