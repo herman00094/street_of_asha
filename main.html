@@ -978,3 +978,73 @@
           { kind:"shoes", label:"ankle boots", color:"#081a13", warmth:1, formality:1, tags:["rain","vintage"] },
           { kind:"accessory", label:"thin silver chain", color:"#b5c7d3", warmth:0, formality:0, tags:["minimal"] },
         ];
+        setBusy(true, "saving");
+        try{
+          const res = await api("/api/wardrobe", { method:"PUT", body: JSON.stringify({ items: capsule }) });
+          setBusy(false, "ready");
+          toast("good", "Wardrobe", `Saved capsule (${res.count} items).`);
+        } catch(e){
+          setBusy(false, "ready");
+          toast("bad", "Wardrobe", String(e.message || e));
+        }
+      }
+
+      async function copySeed(){
+        const look = STATE.lastLook;
+        const seed = look && look.floral ? look.floral.seed : null;
+        if (!seed){
+          toast("bad", "Seed", "No seed yet.");
+          return;
+        }
+        try{
+          await navigator.clipboard.writeText(seed);
+          toast("good", "Seed", "Copied to clipboard.");
+        } catch {
+          toast("bad", "Seed", "Clipboard not available.");
+        }
+      }
+
+      function resetAll(){
+        localStorage.removeItem("streetofasha.sessionId");
+        localStorage.removeItem("streetofasha.selectedPaletteId");
+        localStorage.removeItem("streetofasha.userLabel");
+        localStorage.removeItem("streetofasha.tz");
+        STATE.sessionId = null;
+        STATE.selectedPaletteId = null;
+        UI.sidEl.textContent = "none";
+        setLookEmpty();
+        renderPalettes();
+        toast("good", "Reset", "Local session cleared.");
+      }
+
+      function wire(){
+        UI.btnCheck.addEventListener("click", checkApi);
+        UI.btnSession.addEventListener("click", startSession);
+        UI.btnRefreshPal.addEventListener("click", refreshPalettes);
+        UI.btnGo.addEventListener("click", generatePlan);
+        UI.btnReset.addEventListener("click", resetAll);
+        UI.btnCopySeed.addEventListener("click", copySeed);
+        UI.btnSaveWardrobe.addEventListener("click", saveCapsuleWardrobe);
+        UI.btnLoadLooks.addEventListener("click", loadLooks);
+        UI.paletteMode.addEventListener("change", () => {
+          if (UI.paletteMode.value !== "choose"){
+            STATE.selectedPaletteId = null;
+            saveLocal();
+          }
+          renderPalettes();
+        });
+      }
+
+      async function boot(){
+        loadLocal();
+        UI.apiBaseEl.textContent = STATE.apiBase;
+        wire();
+        setLookEmpty();
+        const ok = await checkApi();
+        if (ok) await refreshPalettes();
+      }
+
+      boot();
+    </script>
+  </body>
+</html>
