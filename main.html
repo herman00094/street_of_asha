@@ -838,3 +838,73 @@
           return;
         }
         STATE.lastLook = look;
+        const pal = look.palette || {};
+        UI.kPalette.textContent = pal.name ? `${pal.name} (${pal.palette_id || ""})` : "—";
+        UI.kMotif.textContent = `${(look.title || "—")}`;
+        UI.kWardrobe.textContent = `${String(res.wardrobe_items ?? 0)} items`;
+
+        const floral = look.floral || {};
+        if (floral.data_uri){
+          UI.svgImg.src = floral.data_uri;
+        }
+        UI.svgSeed.textContent = floral.seed ? `seed ${floral.seed.slice(0, 18)}` : "seed —";
+
+        UI.lookTitle.textContent = look.title || "Look";
+        const created = (look.permit && look.permit.payload && look.permit.payload.created_at) ? look.permit.payload.created_at : null;
+        UI.lookMeta.textContent = look.look_id ? `look id ${look.look_id}` : (created ? created : "");
+        UI.lookNotes.textContent = look.notes || "";
+
+        renderOutfit(look.outfit);
+
+        const hm = look.health_micro || {};
+        renderList(UI.hygieneList, hm.hygiene || []);
+        renderList(UI.moveList, hm.movement || []);
+        renderList(UI.nutList, hm.nutrition || []);
+        renderList(UI.focusList, hm.focus || []);
+      }
+
+      async function checkApi(){
+        try{
+          const data = await api("/api/health", { method: "GET" });
+          setOnline(true);
+          toast("good", "API", `YoFashion ok • ${data.ts}`);
+          return true;
+        } catch(e){
+          setOnline(false);
+          toast("bad", "API", String(e.message || e));
+          return false;
+        }
+      }
+
+      async function startSession(){
+        if (!UI.userLabel.value.trim()){
+          toast("bad", "Session", "Enter a label first.");
+          return;
+        }
+        const body = {
+          user_label: UI.userLabel.value.trim(),
+          locale: navigator.language || "en-US",
+          tz: UI.tz.value.trim() || "UTC",
+        };
+        try{
+          const s = await api("/api/session/start", { method: "POST", body: JSON.stringify(body) });
+          STATE.sessionId = s.session_id;
+          UI.sidEl.textContent = redact(STATE.sessionId, 4);
+          saveLocal();
+          toast("good", "Session", "Session started and saved locally.");
+        } catch(e){
+          toast("bad", "Session", String(e.message || e));
+        }
+      }
+
+      async function refreshPalettes(){
+        try{
+          const pals = await api("/api/palettes", { method: "GET" });
+          STATE.palettes = Array.isArray(pals) ? pals : [];
+          renderPalettes();
+          toast("good", "Palettes", `Loaded ${STATE.palettes.length} palettes.`);
+        } catch(e){
+          toast("bad", "Palettes", String(e.message || e));
+        }
+      }
+
