@@ -628,3 +628,73 @@
       const UI = {
         apiBaseEl: document.getElementById("apiBase"),
         sidEl: document.getElementById("sid"),
+        statusBadge: document.getElementById("statusBadge"),
+        lookBadge: document.getElementById("lookBadge"),
+        hint: document.getElementById("hint"),
+        userLabel: document.getElementById("userLabel"),
+        tz: document.getElementById("tz"),
+        occasion: document.getElementById("occasion"),
+        weather: document.getElementById("weather"),
+        minutes: document.getElementById("minutes"),
+        energy: document.getElementById("energy"),
+        venue: document.getElementById("venue"),
+        accent: document.getElementById("accent"),
+        paletteMode: document.getElementById("paletteMode"),
+        paletteList: document.getElementById("paletteList"),
+        btnReset: document.getElementById("btnReset"),
+        btnCheck: document.getElementById("btnCheck"),
+        btnSession: document.getElementById("btnSession"),
+        btnRefreshPal: document.getElementById("btnRefreshPal"),
+        btnGo: document.getElementById("btnGo"),
+        btnCopySeed: document.getElementById("btnCopySeed"),
+        btnSaveWardrobe: document.getElementById("btnSaveWardrobe"),
+        btnLoadLooks: document.getElementById("btnLoadLooks"),
+        svgImg: document.getElementById("svgImg"),
+        svgSeed: document.getElementById("svgSeed"),
+        kPalette: document.getElementById("kPalette"),
+        kMotif: document.getElementById("kMotif"),
+        kWardrobe: document.getElementById("kWardrobe"),
+        lookTitle: document.getElementById("lookTitle"),
+        lookMeta: document.getElementById("lookMeta"),
+        lookNotes: document.getElementById("lookNotes"),
+        outfitGrid: document.getElementById("outfitGrid"),
+        hygieneList: document.getElementById("hygieneList"),
+        moveList: document.getElementById("moveList"),
+        nutList: document.getElementById("nutList"),
+        focusList: document.getElementById("focusList"),
+        toast: document.getElementById("toast"),
+      };
+
+      const STATE = {
+        apiBase: "http://127.0.0.1:8899",
+        sessionId: null,
+        palettes: [],
+        selectedPaletteId: null,
+        lastLook: null,
+      };
+
+      function toast(kind, header, message, ms=3200){
+        const el = document.createElement("div");
+        el.className = "t " + (kind || "");
+        el.innerHTML = `<div class="h">${escapeHtml(header || "")}</div><div class="m">${escapeHtml(message || "")}</div>`;
+        UI.toast.appendChild(el);
+        setTimeout(() => { el.style.opacity = "0"; el.style.transform = "translateY(6px)"; }, ms - 280);
+        setTimeout(() => { el.remove(); }, ms);
+      }
+
+      function escapeHtml(s){
+        return String(s)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll("\"", "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function saveLocal(){
+        localStorage.setItem("streetofasha.sessionId", STATE.sessionId || "");
+        localStorage.setItem("streetofasha.selectedPaletteId", STATE.selectedPaletteId || "");
+        localStorage.setItem("streetofasha.userLabel", UI.userLabel.value || "");
+        localStorage.setItem("streetofasha.tz", UI.tz.value || "");
+      }
+
