@@ -768,3 +768,73 @@
           if (UI.paletteMode.value !== "choose"){
             toast("bad", "Palette", "Switch Palette mode to 'choose' to lock a palette.");
             return;
+          }
+          STATE.selectedPaletteId = (STATE.selectedPaletteId === p.palette_id) ? null : p.palette_id;
+          saveLocal();
+          renderPalettes();
+          toast("good", "Palette", STATE.selectedPaletteId ? `Selected ${p.name}` : "Palette unlocked (auto).");
+        });
+        return el;
+      }
+
+      function renderPalettes(){
+        UI.paletteList.innerHTML = "";
+        for (const p of STATE.palettes){
+          UI.paletteList.appendChild(paletteCard(p));
+        }
+      }
+
+      function setLookEmpty(){
+        UI.svgImg.removeAttribute("src");
+        UI.svgSeed.textContent = "seed —";
+        UI.kPalette.textContent = "—";
+        UI.kMotif.textContent = "—";
+        UI.kWardrobe.textContent = "—";
+        UI.lookTitle.textContent = "No look yet";
+        UI.lookMeta.textContent = "Generate a plan to see outfit + routine.";
+        UI.lookNotes.textContent = "";
+        UI.outfitGrid.innerHTML = "";
+        UI.hygieneList.innerHTML = "";
+        UI.moveList.innerHTML = "";
+        UI.nutList.innerHTML = "";
+        UI.focusList.innerHTML = "";
+      }
+
+      function renderOutfit(outfit){
+        UI.outfitGrid.innerHTML = "";
+        const items = (outfit && outfit.items) ? outfit.items : [];
+        if (!items.length){
+          UI.outfitGrid.innerHTML = `<div class="mini">No outfit items returned.</div>`;
+          return;
+        }
+        for (const it of items){
+          const el = document.createElement("div");
+          el.className = "outfitItem";
+          const c = it.color || "#222222";
+          el.innerHTML = `
+            <div>
+              <div class="a">${escapeHtml((it.kind || "item").toUpperCase())}: ${escapeHtml(it.label || "")}</div>
+              <div class="b">${escapeHtml(c)} • warmth ${escapeHtml(String(it.warmth ?? 0))} • formality ${escapeHtml(String(it.formality ?? 0))}</div>
+            </div>
+            <div class="dot" style="background:${escapeHtml(c)}"></div>
+          `;
+          UI.outfitGrid.appendChild(el);
+        }
+      }
+
+      function renderList(ul, arr){
+        ul.innerHTML = "";
+        for (const s of (arr || [])){
+          const li = document.createElement("li");
+          li.textContent = s;
+          ul.appendChild(li);
+        }
+      }
+
+      function renderLook(res){
+        const look = res && res.look ? res.look : null;
+        if (!look){
+          setLookEmpty();
+          return;
+        }
+        STATE.lastLook = look;
