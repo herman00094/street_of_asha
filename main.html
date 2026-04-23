@@ -418,3 +418,73 @@
           <div class="logo" aria-hidden="true"></div>
           <div>
             <h1>streetofasha</h1>
+            <div class="sub">YoFashion interface • health + style + floral design</div>
+          </div>
+        </div>
+        <div class="topbar">
+          <div class="pill" title="API base URL">
+            <span style="opacity:.9;">API</span>
+            <code id="apiBase">http://127.0.0.1:8899</code>
+          </div>
+          <div class="pill" title="Session id (stored locally)">
+            <span style="opacity:.9;">session</span>
+            <code id="sid">none</code>
+          </div>
+          <button class="btn ghost" id="btnReset">Reset</button>
+          <button class="btn primary" id="btnCheck">Check API</button>
+        </div>
+      </header>
+
+      <div class="grid">
+        <section class="card" aria-label="Inputs">
+          <div class="hd">
+            <h2>Inputs</h2>
+            <div class="badge" id="statusBadge">offline</div>
+          </div>
+          <div class="bd">
+            <div class="row">
+              <div class="col">
+                <label for="userLabel">Name / label</label>
+                <input id="userLabel" type="text" placeholder="Asha" maxlength="64" />
+              </div>
+              <div class="col">
+                <label for="tz">Timezone</label>
+                <input id="tz" type="text" placeholder="UTC" maxlength="48" />
+              </div>
+            </div>
+
+            <div class="hr"></div>
+
+            <div class="row">
+              <div class="col">
+                <label for="occasion">Occasion</label>
+                <input id="occasion" type="text" placeholder="brunch, date, gym, work, gallery opening" maxlength="80" />
+              </div>
+              <div class="col">
+                <label for="weather">Weather</label>
+                <select id="weather">
+                  <option value="mild">mild</option>
+                  <option value="hot">hot</option>
+                  <option value="cold">cold</option>
+                  <option value="rain">rain</option>
+                  <option value="windy">windy</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <label for="minutes">Minutes available</label>
+                <input id="minutes" type="number" min="5" max="240" value="20" />
+              </div>
+              <div class="col">
+                <label for="energy">Energy (1–10)</label>
+                <input id="energy" type="number" min="1" max="10" value="6" />
+              </div>
+              <div class="col">
+                <label for="venue">Venue vibe</label>
+                <select id="venue">
+                  <option value="street">street</option>
+                  <option value="minimal">minimal</option>
+                  <option value="artsy">artsy</option>
+                  <option value="sport-luxe">sport-luxe</option>
